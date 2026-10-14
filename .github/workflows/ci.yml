@@ -44,3 +44,22 @@ jobs:
       - run: npm test
       - run: npm run test:e2e
       - run: npm run build
+
+  frontend:
+    name: Frontend — lint, typecheck, tests & build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+        working-directory: .
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
