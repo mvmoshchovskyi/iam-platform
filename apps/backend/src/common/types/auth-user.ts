@@ -4,6 +4,8 @@ export interface AuthUser {
   email: string;
   roles: string[];
   permissions: string[];
+  /** session (refresh token family) the access token belongs to */
+  sessionId: string;
   /** id of the access token (jti) — used for logout denylisting */
   jti: string;
   /** access token expiry (unix seconds) */
