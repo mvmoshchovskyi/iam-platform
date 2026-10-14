@@ -19,6 +19,7 @@ import { PermissionsGuard } from './rbac/guards/permissions.guard';
 import { RolesGuard } from './rbac/guards/roles.guard';
 import { RedisModule } from './redis/redis.module';
 import { TokensModule } from './tokens/tokens.module';
+import { TwoFactorModule } from './two-factor/two-factor.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -48,6 +49,7 @@ import { UsersModule } from './users/users.module';
     TokensModule,
     UsersModule,
     AuthModule,
+    TwoFactorModule,
   ],
   providers: [
     { provide: APP_PIPE, useFactory: createValidationPipe },
