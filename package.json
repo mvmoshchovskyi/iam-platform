@@ -10,7 +10,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "npm run start:dev -w apps/backend & npm run dev -w apps/frontend",
+    "dev": "concurrently -k -n api,web -c blue,magenta \"npm:dev:backend\" \"npm:dev:frontend\"",
     "dev:backend": "npm run start:dev -w apps/backend",
     "dev:frontend": "npm run dev -w apps/frontend",
     "build": "npm run build --workspaces --if-present",
@@ -23,7 +23,9 @@
     "db:down": "docker compose down",
     "db:test:up": "docker compose -f docker-compose.test.yml up -d",
     "db:test:down": "docker compose -f docker-compose.test.yml down",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:e2e": "npm run test:e2e -w apps/backend",
+    "setup": "docker compose up -d --wait && npm run prisma:deploy -w apps/backend && npm run prisma:seed -w apps/backend"
   },
   "lint-staged": {
     "*.{ts,tsx,js,mjs,cjs,json,md,yml,yaml,css}": "prettier --write"
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
+    "concurrently": "^10.0.6",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10"
