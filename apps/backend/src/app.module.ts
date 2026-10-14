@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { seconds, ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import type Redis from 'ioredis';
+import { AdminModule } from './admin/admin.module';
 import { AuditModule } from './audit/audit.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
@@ -18,6 +19,7 @@ import { REDIS_CLIENT } from './redis/redis.constants';
 import { PermissionsGuard } from './rbac/guards/permissions.guard';
 import { RolesGuard } from './rbac/guards/roles.guard';
 import { RedisModule } from './redis/redis.module';
+import { SessionsModule } from './sessions/sessions.module';
 import { TokensModule } from './tokens/tokens.module';
 import { TwoFactorModule } from './two-factor/two-factor.module';
 import { UsersModule } from './users/users.module';
@@ -50,6 +52,8 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthModule,
     TwoFactorModule,
+    SessionsModule,
+    AdminModule,
   ],
   providers: [
     { provide: APP_PIPE, useFactory: createValidationPipe },

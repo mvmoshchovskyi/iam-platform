@@ -10,7 +10,7 @@ export const describeDevice = (userAgent: string | null | undefined): string => 
   const osLabel = os.name ? `${os.name}${os.version ? ` ${os.version}` : ''}` : null;
   const deviceLabel = device.vendor ? `${device.vendor} ${device.model ?? ''}`.trim() : null;
   const parts = [
-    browserLabel ?? userAgent.slice(0, 40),
+    browserLabel ?? 'Unknown browser',
     osLabel && `on ${osLabel}`,
     deviceLabel && `(${deviceLabel})`,
   ];
