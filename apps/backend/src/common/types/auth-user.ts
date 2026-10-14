@@ -6,7 +6,7 @@ export interface AuthUser {
   permissions: string[];
   /** session (refresh token family) the access token belongs to */
   sessionId: string;
-  /** id of the access token (jti) — used for logout denylisting */
+  /** access token id */
   jti: string;
   /** access token expiry (unix seconds) */
   exp: number;

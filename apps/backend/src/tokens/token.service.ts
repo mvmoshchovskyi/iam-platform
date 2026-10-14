@@ -85,23 +85,16 @@ export class TokenService {
     return { token, expiresIn: accessTtl };
   }
 
-  /** Denylists an access token until it expires (used on logout). */
-  async denylistAccessToken(jti: string, exp: number): Promise<void> {
-    const ttl = exp - Math.floor(Date.now() / 1000);
-    if (ttl > 0) await this.redis.set(`jwt:deny:${jti}`, '1', 'EX', ttl);
-  }
-
   /**
-   * Returns true if the access token was revoked: explicitly denylisted, its session was
-   * revoked, or it was issued before a "revoke everything" event for the user.
+   * Returns true if the access token was revoked: its session was revoked (logout, session
+   * revocation, reuse detection) or it predates a "revoke everything" event for the user.
    */
   async isAccessTokenRevoked(payload: AccessTokenPayload): Promise<boolean> {
-    const [denied, sessionRevoked, validAfter] = await this.redis.mget(
-      `jwt:deny:${payload.jti}`,
+    const [sessionRevoked, validAfter] = await this.redis.mget(
       `session:revoked:${payload.sid}`,
       `user:tokens-valid-after:${payload.sub}`,
     );
-    return Boolean(denied || sessionRevoked || (validAfter && payload.iat < Number(validAfter)));
+    return Boolean(sessionRevoked || (validAfter && payload.iat < Number(validAfter)));
   }
 
   // ─── Sessions / refresh tokens ────────────────────────────────────
