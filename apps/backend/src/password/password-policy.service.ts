@@ -38,10 +38,12 @@ export class PasswordPolicyService {
   /** Rejects weak passwords; user-specific inputs (email, name) are penalised. */
   assertStrong(password: string, userInputs: (string | null | undefined)[] = []): void {
     const inputs = userInputs.filter((v): v is string => Boolean(v));
-    const result = this.zxcvbn.check(password, [
-      ...inputs,
-      ...inputs.flatMap((v) => v.split(/[@.\s]/)),
-    ]);
+    // Penalise the whole value, the email local part and each word in it
+    const variants = inputs.flatMap((v) => [v, v.split('@')[0], ...v.split(/[@.\s_-]/)]);
+    const result = this.zxcvbn.check(
+      password,
+      [...new Set(variants)].filter((v) => v.length > 1),
+    );
     if (result.score < MIN_PASSWORD_SCORE) {
       throw new BadRequestException({
         message: result.feedback.warning || 'Password is too weak',

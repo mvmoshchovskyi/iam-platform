@@ -51,7 +51,6 @@ export function setupSwagger(app: INestApplication): void {
       .setVersion('1.0')
       .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
       .addCookieAuth('refresh_token', { type: 'apiKey', in: 'cookie' }, 'refresh-cookie')
-      .addSecurityRequirements('access-token')
       .build(),
   );
   SwaggerModule.setup(`${prefix}/docs`, app, document, {
